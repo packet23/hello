@@ -138,9 +138,8 @@ jobs:
         env:
           MANIFEST: ${{ steps.create-manifest.outputs.manifest }}
           GHCR_REPO: "ghcr.io/${{ github.repository_owner }}"
-          DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
           run: |
             docker buildx imagetools create \
-                  -t "${DOCKERHUB_REPO}/hello" \
+                  -t "${GHCR_REPO}/hello" \
                   "${MANIFEST}"
