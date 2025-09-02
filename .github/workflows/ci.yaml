@@ -52,7 +52,7 @@ jobs:
     needs: [build_images]
     with:
       artifact_pattern: "image-*"
-      container_repository: "ghcr.io/${{ github.repository_owner }}/hello"
+      container_registry: "ghcr.io/${{ github.repository_owner }}/hello"
       registry_username: ${{ github.actor }}
       push: ${{ github.event_name != 'pull_request' }}
       workflow_run_id: ${{ github.run_id }}

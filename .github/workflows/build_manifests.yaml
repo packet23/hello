@@ -6,7 +6,7 @@ on:
       artifact_pattern:
         required: true
         type: string
-      container_repository:
+      container_registry:
         required: true
         type: string
       registry_username:
@@ -39,10 +39,6 @@ jobs:
           pattern: ${{ inputs.artifact_pattern }}
           run-id: ${{ inputs.workflow_run_id }}
 
-      - name: List
-        run: |
-          ls -lR
-
       - name: Load images
         id: load-images
         run: |
@@ -55,16 +51,6 @@ jobs:
             ) | sed -ne 's#^Loaded image ID: ##p'
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
-
-      - name: Print images
-        run: |
-          docker image ls -a
-
-      - name: Print digests
-        env:
-          DIGESTS: ${{ steps.load-images.outputs.digests }}
-        run: |
-          echo "$DIGESTS"
 
       - name: Push images to local registry
         id: local-push
@@ -93,20 +79,20 @@ jobs:
           docker buildx imagetools create -t "$REGISTRY/manifest" $IMAGES
           echo "manifest=$REGISTRY/manifest" >> "$GITHUB_OUTPUT"
 
-      - name: Authenticate with OIDC
+      - name: Log in to container registry
         if: ${{ inputs.push }}
         uses: docker/login-action@v3
         with:
-          registry: ${{ inputs.container_repository }}
+          registry: ${{ inputs.container_registry }}
           username: ${{ inputs.registry_username }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish to Container Repository
+      - name: Publish to container registry
         if: ${{ inputs.push }}
         env:
           MANIFEST: ${{ steps.create-manifest.outputs.manifest }}
-          CONTAINER_REPOSITORY: ${{ inputs.container_repository }}
+          CONTAINER_registry: ${{ inputs.container_registry }}
         run: |
           docker buildx imagetools create \
-                -t "$CONTAINER_REPOSITORY" \
+                -t "$CONTAINER_registry" \
                 "$MANIFEST"
