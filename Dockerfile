@@ -6,5 +6,4 @@ RUN cargo install --path . --root dest --no-track
 
 FROM scratch
 COPY --from=build /app/dest /
-USER 1000:1000
 ENTRYPOINT ["/bin/hello"]
