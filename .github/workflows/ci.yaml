@@ -59,7 +59,7 @@ jobs:
 
     steps:
       - name: Call Build Manifests Workflow
-        uses: ./.github/workflows/build_manifests.yaml
+        uses: ./.github/workflows/build_manifests.yaml@main
         with:
           artifact_pattern: "out/image-*.tar"
           container_repository: "ghcr.io/${{ github.repository_owner }}/hello"
