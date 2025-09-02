@@ -54,7 +54,6 @@ jobs:
       artifact_pattern: "out/image-*.tar"
       container_repository: "ghcr.io/${{ github.repository_owner }}/hello"
       registry_username: ${{ github.actor }}
-      registry_password: ${{ secrets.GITHUB_TOKEN }}
       push: ${{ github.event_name != 'pull_request' }}
       workflow_run_id: ${{ github.run_id }}
     permissions:

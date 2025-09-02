@@ -12,11 +12,6 @@ on:
       registry_username:
         required: true
         type: string
-      registry_password:
-        required: true
-        type: string
-        description: "Password for the container registry."
-        sensitive: true
       push:
         required: true
         type: boolean
@@ -93,7 +88,7 @@ jobs:
         with:
           registry: ${{ inputs.container_repository }}
           username: ${{ inputs.registry_username }}
-          password: ${{ inputs.registry_password }}
+          password: ${{ secrents.GITHUB_TOKEN }}
 
       - name: Publish to Container Repository
         if: ${{ inputs.push }}
