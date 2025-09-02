@@ -15,6 +15,9 @@ on:
       push:
         required: true
         type: boolean
+      workflow_run_id:
+        required: true
+        type: string
 
 jobs:
   build-manifests:
@@ -32,6 +35,13 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Download artifacts from specific workflow run
+        uses: actions/download-artifact@v5
+        with:
+          pattern: ${{ inputs.artifact_pattern }}
+          path: out
+          run-id: ${{ inputs.workflow_run_id }}
 
       - name: Load images
         id: load-images
