@@ -37,7 +37,6 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           pattern: ${{ inputs.artifact_pattern }}
-          path: .
           run-id: ${{ inputs.workflow_run_id }}
 
       - name: List
@@ -50,7 +49,7 @@ jobs:
           {
             echo 'digests<<EOF'
             (
-              for tarball in ${{ inputs.artifact_pattern }}; do
+              for tarball in ${{ inputs.artifact_pattern }}/*.tar; do
                 docker load -q -i "$tarball"
               done
             ) | sed -ne 's#^Loaded image ID: ##p'
