@@ -99,6 +99,7 @@ jobs:
         with:
           registry: ${{ inputs.container_repository }}
           username: ${{ inputs.registry_username }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to Container Repository
         if: ${{ inputs.push }}
