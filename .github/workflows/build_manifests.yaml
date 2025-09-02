@@ -40,6 +40,10 @@ jobs:
           path: .
           run-id: ${{ inputs.workflow_run_id }}
 
+      - name: List
+        run: |
+          ls -lR
+
       - name: Load images
         id: load-images
         run: |
