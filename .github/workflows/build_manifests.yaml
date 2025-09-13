@@ -49,7 +49,7 @@ jobs:
             echo 'digests<<EOF'
             (
               for tarball in ${{ inputs.artifact_pattern }}/*.tar; do
-                docker load -q -i "$tarball"
+                docker image load -q -i "$tarball"
               done
             ) | sed -ne 's#^Loaded image ID: ##p'
             echo 'EOF'
