@@ -21,9 +21,6 @@ jobs:
       contents: read
       id-token: write
 
-    strategy:
-      matrix:
-        platforms: ["linux/amd64","linux/arm64"]
     steps:
       -
         name: Checkout
@@ -47,6 +44,8 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: ${{ matrix.platforms }}
+          platforms: |
+            linux/amd64
+            linux/arm64
           push: true
           outputs: "type=image,name=ghcr.io/${{ github.repository_owner }}/hello2,annotation-index.org.opencontainers.image.description=My multi-arch image"
