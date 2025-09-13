@@ -81,7 +81,11 @@ jobs:
           DESCRIPTION: ${{ inputs.description }}
         run: |
           docker buildx imagetools create \
-            --annotation "manifest-descriptor:org.opencontainers.image.description=${DESCRIPTION}" \
+            --annotation "index:org.opencontainers.image.description=${DESCRIPTION}" \
+            --dry-run \
+            -t "$LOCAL_REGISTRY/manifest" $IMAGES
+          docker buildx imagetools create \
+            --annotation "index:org.opencontainers.image.description=${DESCRIPTION}" \
             -t "$LOCAL_REGISTRY/manifest" $IMAGES
           echo "manifest=$LOCAL_REGISTRY/manifest" >> "$GITHUB_OUTPUT"
 
@@ -99,6 +103,10 @@ jobs:
           MANIFEST: ${{ steps.create-manifest.outputs.manifest }}
           CONTAINER_REGISTRY: ${{ inputs.container_registry }}
         run: |
+          docker buildx imagetools create \
+                --dry-run \
+                -t "$CONTAINER_REGISTRY" \
+                "$MANIFEST"
           docker buildx imagetools create \
                 -t "$CONTAINER_REGISTRY" \
                 "$MANIFEST"
