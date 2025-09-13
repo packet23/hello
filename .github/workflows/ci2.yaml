@@ -38,7 +38,7 @@ jobs:
         name: Log in to container registry
         uses: docker/login-action@v3
         with:
-          registry: ghrcr.io/${{ github.repository_owner }}/hello2
+          registry: ghcr.io/${{ github.repository_owner }}/hello2
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
@@ -49,4 +49,4 @@ jobs:
           file: ./Dockerfile
           platforms: ${{ matrix.platforms }}
           push: true
-          outputs: "type=image,name=ghrcr.io/${{ github.repository_owner }}/hello2,annotation-index.org.opencontainers.image.description=My multi-arch image"
+          outputs: "type=image,name=ghcr.io/${{ github.repository_owner }}/hello2,annotation-index.org.opencontainers.image.description=My multi-arch image"
