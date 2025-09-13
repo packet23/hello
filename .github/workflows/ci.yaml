@@ -40,7 +40,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           outputs: |
-            type=oci,dest=./out/image-${{ matrix.os }}.tar
+            type=docker,oci-mediatypes=true,dest=./out/image-${{ matrix.os }}.tar
 
       - uses: actions/upload-artifact@v4
         with:
