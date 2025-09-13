@@ -81,7 +81,7 @@ jobs:
           DESCRIPTION: ${{ inputs.description }}
         run: |
           docker buildx imagetools create \
-            --annotation "index:org.opencontainers.image.description=${DESCRIPTION}" \
+            --annotation "manifest-descriptor:org.opencontainers.image.description=${DESCRIPTION}" \
             -t "$LOCAL_REGISTRY/manifest" $IMAGES
           echo "manifest=$LOCAL_REGISTRY/manifest" >> "$GITHUB_OUTPUT"
 
