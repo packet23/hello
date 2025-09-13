@@ -18,6 +18,9 @@ on:
       workflow_run_id:
         required: true
         type: string
+      description:
+        required: true
+        type: string
 
 jobs:
   build-manifests:
@@ -92,7 +95,9 @@ jobs:
         env:
           MANIFEST: ${{ steps.create-manifest.outputs.manifest }}
           CONTAINER_registry: ${{ inputs.container_registry }}
+          DESCRIPTION: ${{ inputs.description }}
         run: |
           docker buildx imagetools create \
+                --annotation "index:org.opencontainers.image.description=${DESCRIPTION}" \
                 -t "$CONTAINER_registry" \
                 "$MANIFEST"
