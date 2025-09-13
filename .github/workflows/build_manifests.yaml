@@ -82,7 +82,7 @@ jobs:
         run: |
           docker buildx imagetools create \
             --annotation "index:org.opencontainers.image.description=${DESCRIPTION}" \
-            --dry-run \
+            -D --dry-run \
             -t "$LOCAL_REGISTRY/manifest" $IMAGES
           docker buildx imagetools create \
             --annotation "index:org.opencontainers.image.description=${DESCRIPTION}" \
@@ -104,7 +104,7 @@ jobs:
           CONTAINER_REGISTRY: ${{ inputs.container_registry }}
         run: |
           docker buildx imagetools create \
-                --dry-run \
+                -D --dry-run \
                 -t "$CONTAINER_REGISTRY" \
                 "$MANIFEST"
           docker buildx imagetools create \
