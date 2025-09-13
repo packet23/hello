@@ -59,15 +59,15 @@ jobs:
         id: local-push
         env:
           DIGESTS: ${{ steps.load-images.outputs.digests }}
-          REGISTRY: "127.0.0.1:${{ job.services.registry.ports['5000'] }}"
+          LOCAL_REGISTRY: "127.0.0.1:${{ job.services.registry.ports['5000'] }}"
         run: |
           {
             echo 'images<<EOF'
             echo "$DIGESTS" | (
               while read digest; do
                 tag=$(uuidgen)
-                docker image tag "$digest" "$REGISTRY/image:$tag"
-                docker image push -q "$REGISTRY/image:$tag"
+                docker image tag "$digest" "$LOCAL_REGISTRY/image:$tag"
+                docker image push -q "$LOCAL_REGISTRY/image:$tag"
               done
             )
             echo 'EOF'
@@ -77,9 +77,12 @@ jobs:
         id: create-manifest
         env:
           IMAGES: ${{ steps.local-push.outputs.images }}
-          REGISTRY: "127.0.0.1:${{ job.services.registry.ports['5000'] }}"
+          LOCAL_REGISTRY: "127.0.0.1:${{ job.services.registry.ports['5000'] }}"
+          DESCRIPTION: ${{ inputs.description }}
         run: |
-          docker buildx imagetools create -t "$REGISTRY/manifest" $IMAGES
+          docker buildx imagetools create \
+            --annotation "index:org.opencontainers.image.description=${DESCRIPTION}" \
+            -t "$LOCAL_REGISTRY/manifest" $IMAGES
           echo "manifest=$REGISTRY/manifest" >> "$GITHUB_OUTPUT"
 
       - name: Log in to container registry
@@ -94,10 +97,8 @@ jobs:
         if: ${{ inputs.push }}
         env:
           MANIFEST: ${{ steps.create-manifest.outputs.manifest }}
-          CONTAINER_registry: ${{ inputs.container_registry }}
-          DESCRIPTION: ${{ inputs.description }}
+          CONTAINER_REGISTRY: ${{ inputs.container_registry }}
         run: |
           docker buildx imagetools create \
-                --annotation "manifest-descriptor:org.opencontainers.image.description=${DESCRIPTION}" \
-                -t "$CONTAINER_registry" \
+                -t "$CONTAINER_REGISTRY" \
                 "$MANIFEST"
