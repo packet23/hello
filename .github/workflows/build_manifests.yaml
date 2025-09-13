@@ -98,6 +98,6 @@ jobs:
           DESCRIPTION: ${{ inputs.description }}
         run: |
           docker buildx imagetools create \
-                --annotation "index:org.opencontainers.image.description=${DESCRIPTION}" \
+                --annotation "manifest-descriptor:org.opencontainers.image.description=${DESCRIPTION}" \
                 -t "$CONTAINER_registry" \
                 "$MANIFEST"
