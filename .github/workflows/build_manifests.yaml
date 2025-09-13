@@ -83,7 +83,7 @@ jobs:
           docker buildx imagetools create \
             --annotation "index:org.opencontainers.image.description=${DESCRIPTION}" \
             -t "$LOCAL_REGISTRY/manifest" $IMAGES
-          echo "manifest=$REGISTRY/manifest" >> "$GITHUB_OUTPUT"
+          echo "manifest=$LOCAL_REGISTRY/manifest" >> "$GITHUB_OUTPUT"
 
       - name: Log in to container registry
         if: ${{ inputs.push }}
