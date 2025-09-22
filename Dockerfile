@@ -1,4 +1,4 @@
-FROM rust:1.89-alpine AS build
+FROM rust:1.90-alpine AS build
 COPY . /app
 RUN ls -laR /app
 WORKDIR /app
