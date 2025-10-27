@@ -37,7 +37,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Download artifacts from specific workflow run
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           pattern: ${{ inputs.artifact_pattern }}
           run-id: ${{ inputs.workflow_run_id }}
